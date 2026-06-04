@@ -1,18 +1,11 @@
-# ==========================================
-# 1. STREAMLIT ŠPECIFICKÉ SÚBORY (NAJDÔLEŽITEJŠIE!)
-# ==========================================
-# V ŽIADNOM PRÍPADE nepushuj secrets.toml – obsahuje tvoje heslá a API kľúče
-.streamlit/secrets.toml
-.streamlit/config.toml
-
-# Streamlit config a cache
+# Streamlit
 .streamlit/
-!.streamlit/apps/ # Ak by si tam mal náhodou nejakú špeciálnu štruktúru, ale štandardne ignoruj celý priečinok
 
-# ==========================================
-# 2. DÁTA A VEĽKÉ SÚBORY (DATA SCIENCE SAFE)
-# ==========================================
-# Ignoruj lokálne datasety – nepatria na GitHub (využi radšej cloud alebo ich sťahuj cez kód)
+# Environment a secrets
+.env
+*.env
+
+# Dáta
 *.csv
 *.xlsx
 *.json
@@ -22,17 +15,11 @@
 *.pickle
 *.h5
 *.sqlite3
-
-# Ak máš špeciálny priečinok na dáta, ignoruj ho celý
 data/
 datasets/
 
-# ==========================================
-# 3. VIRTUÁLNE PROSTREDIA (PYTHON)
-# ==========================================
-# Nikdy nepushuj nainštalované knižnice (na to slúži requirements.txt)
+# Virtuálne prostredia
 .venv/
-.env/
 venv/
 ENV/
 env/
@@ -41,16 +28,11 @@ lib/
 include/
 share/
 pyvenv.cfg
-
-# Poetry, Pipenv a Anaconda prostredia
 .poetry/
-.pypoetry/
 .conda/
 conda-env/
 
-# ==========================================
-# 4. CACHE A PREKOMPILOVANÝ KÓD
-# ==========================================
+# Cache
 __pycache__/
 *.py[cod]
 *$py.class
@@ -58,9 +40,7 @@ __pycache__/
 .mypy_cache/
 .ipynb_checkpoints/
 
-# ==========================================
-# 5. SYSTÉMOVÉ SÚBORY (OS-SPECIFIC)
-# ==========================================
+# OS
 .DS_Store
 .DS_Store?
 ._*
@@ -68,17 +48,8 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# ==========================================
-# 6. IDE / EDITORY (VS Code, PyCharm...)
-# ==========================================
+# IDE
 .vscode/
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 .idea/
 *.suo
-*.ntvs*
-*.njsproj
-*.sln
 *.swp
