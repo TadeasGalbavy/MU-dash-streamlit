@@ -1,55 +1,10 @@
-# Streamlit
-.streamlit/
-
-# Environment a secrets
+data/private/
+.streamlit/secrets.toml
 .env
-*.env
-
-# Dáta
-*.csv
-*.xlsx
-*.json
-*.parquet
-*.feather
-*.pkl
-*.pickle
-*.h5
-*.sqlite3
-data/
-datasets/
-
-# Virtuálne prostredia
+__pycache__/
+*.pyc
 .venv/
 venv/
-ENV/
-env/
-bin/
-lib/
-include/
-share/
-pyvenv.cfg
-.poetry/
-.conda/
-conda-env/
-
-# Cache
-__pycache__/
-*.py[cod]
-*$py.class
-.pytest_cache/
-.mypy_cache/
-.ipynb_checkpoints/
-
-# OS
 .DS_Store
-.DS_Store?
-._*
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# IDE
-.vscode/
 .idea/
-*.suo
-*.swp
+.vscode/
