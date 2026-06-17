@@ -25,6 +25,17 @@ The Data Preview page provides a technical check of files loaded from the active
 data directory. It supports CSV, XLSX, and XLS files and displays row counts,
 column counts, data types, missing values, and the first 10 rows.
 
+## Sample Data
+
+Generate fictional demo data with:
+
+```bash
+python scripts/generate_sample_data.py
+```
+
+The generated files are written to `data/sample/` and are safe for GitHub demos.
+Real company data must stay outside GitHub, for example in `data/private/`.
+
 ## Run Locally
 
 Install dependencies:
