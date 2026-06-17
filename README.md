@@ -4,9 +4,9 @@ Minimal Streamlit Business Dashboard for e-commerce and business data.
 
 ## Goal
 
-The project provides a safe base structure for a future multipage dashboard.
-This initial version contains only placeholders and does not load data, compute
-KPIs, or render charts.
+The project provides a safe base structure for a multipage Streamlit dashboard.
+It loads demo data, prepares analytical models, computes KPIs, and renders
+Plotly charts while keeping private data outside version control.
 
 ## Demo vs. Internal Mode
 
@@ -39,12 +39,31 @@ python scripts/generate_sample_data.py
 The generated files are written to `data/sample/` and are safe for GitHub demos.
 Real company data must stay outside GitHub, for example in `data/private/`.
 
-## Run Locally
+## Local setup
+
+Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+On Windows PowerShell, activate it with:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
 Install dependencies:
 
 ```bash
 pip install -r requirements.txt
+```
+
+Generate sample data if `data/sample/` is empty or missing demo CSV files:
+
+```bash
+python scripts/generate_sample_data.py
 ```
 
 Start the app:

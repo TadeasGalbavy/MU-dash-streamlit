@@ -22,13 +22,26 @@ def calculate_total_quantity(orders_model: pd.DataFrame) -> int:
 
 
 def calculate_average_order_value(orders_model: pd.DataFrame) -> float:
-    """Calculate average order value from revenue and unique orders."""
-    total_orders = calculate_total_orders(orders_model)
-
-    if total_orders == 0:
+    """Calculate average order value from order-level revenue."""
+    if (
+        orders_model is None
+        or orders_model.empty
+        or not {"order_id", "revenue"}.issubset(orders_model.columns)
+    ):
         return 0.0
 
-    return calculate_total_revenue(orders_model) / total_orders
+    order_revenue = (
+        orders_model.assign(
+            revenue=pd.to_numeric(orders_model["revenue"], errors="coerce").fillna(0)
+        )
+        .groupby("order_id", as_index=False)["revenue"]
+        .sum()
+    )
+
+    if order_revenue.empty:
+        return 0.0
+
+    return float(order_revenue["revenue"].mean())
 
 
 def calculate_active_products(products_df: pd.DataFrame) -> int:

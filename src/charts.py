@@ -25,24 +25,28 @@ def create_revenue_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
 
 
 def create_monthly_revenue_chart(orders_model: pd.DataFrame) -> go.Figure:
-    """Create a revenue by month chart."""
+    """Create a monthly revenue line chart."""
     if _is_empty_or_missing(orders_model, {"order_date", "revenue"}):
-        return _empty_chart("Revenue by month")
+        return _empty_chart("Monthly revenue")
 
-    chart_data = _with_month(orders_model).groupby("month", as_index=False)[
-        "revenue"
-    ].sum()
+    chart_df = _with_month(orders_model)
+    chart_df["revenue"] = pd.to_numeric(chart_df["revenue"], errors="coerce").fillna(0)
+    chart_data = chart_df.groupby("month", as_index=False)["revenue"].sum()
 
     if chart_data.empty:
-        return _empty_chart("Revenue by month")
+        return _empty_chart("Monthly revenue")
 
-    return px.bar(
+    figure = px.line(
         chart_data,
         x="month",
         y="revenue",
-        title="Revenue by month",
-        labels={"month": "Month", "revenue": "Revenue"},
+        markers=True,
+        title="Monthly revenue",
+        labels={"month": "Month", "revenue": "Revenue (€)"},
     )
+    figure.update_traces(name="Revenue (€)", showlegend=True)
+
+    return figure
 
 
 def create_orders_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -104,6 +108,31 @@ def create_revenue_by_category_chart(orders_model: pd.DataFrame) -> go.Figure:
         orientation="h",
         title="Revenue by category",
         labels={"category": "Category", "revenue": "Revenue"},
+    )
+
+
+def create_revenue_by_category_donut_chart(orders_model: pd.DataFrame) -> go.Figure:
+    """Create a revenue by product category donut chart."""
+    if _is_empty_or_missing(orders_model, {"category", "revenue"}):
+        return _empty_chart("Revenue by category")
+
+    chart_df = orders_model.copy()
+    chart_df["revenue"] = pd.to_numeric(chart_df["revenue"], errors="coerce").fillna(0)
+    chart_data = (
+        chart_df.groupby("category", as_index=False)["revenue"]
+        .sum()
+        .sort_values("revenue", ascending=False)
+    )
+
+    if chart_data.empty:
+        return _empty_chart("Revenue by category")
+
+    return px.pie(
+        chart_data,
+        names="category",
+        values="revenue",
+        title="Revenue by category",
+        hole=0.45,
     )
 
 
