@@ -69,19 +69,19 @@ second_row[2].metric("Latest stock value", f"{latest_stock_value:,.2f}")
 
 st.plotly_chart(
     create_revenue_over_time_chart(orders_model),
-    width="stretch",
+    use_container_width=True,
 )
 st.plotly_chart(
     create_orders_over_time_chart(orders_model),
-    width="stretch",
+    use_container_width=True,
 )
 
 chart_columns = st.columns(2)
 chart_columns[0].plotly_chart(
     create_revenue_by_country_chart(orders_model),
-    width="stretch",
+    use_container_width=True,
 )
 chart_columns[1].plotly_chart(
     create_revenue_by_category_chart(orders_model),
-    width="stretch",
+    use_container_width=True,
 )
