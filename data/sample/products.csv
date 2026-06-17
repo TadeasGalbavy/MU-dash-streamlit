@@ -1,0 +1,121 @@
+product_id,sku,product_name,category,supplier,brand,cost_price,sales_price,active
+P0001,DEMO-HOM-0001,Aero Organizer 45,Home Essentials,Demo Supply One,Fintoro,10.25,16.15,True
+P0002,DEMO-KIT-0002,Urban Prep Bowl 64,Kitchen,Fictional Trade Co,Elvara,5.92,9.38,True
+P0003,DEMO-OFF-0003,Prime Cable Dock 63,Office Gear,Demo Supply One,Brixo,11.99,25.3,True
+P0004,DEMO-TRA-0004,Flex Bottle Sleeve 29,Travel,Demo Supply One,Auralen,11.32,25.19,True
+P0005,DEMO-PER-0005,Fresh Brush Stand 87,Personal Care,Northbridge Demo Ltd,Elvara,9.08,14.92,True
+P0006,DEMO-PET-0006,Bright Travel Bowl 80,Pet Supplies,Sample Goods Hub,Elvara,8.8,19.17,True
+P0007,DEMO-FIT-0007,Aero Grip Band 94,Fitness,Demo Supply One,Brixo,9.61,17.54,True
+P0008,DEMO-ELE-0008,Flex Adapter Pouch 68,Electronics Accessories,Sample Goods Hub,Cavaro,32.52,57.24,True
+P0009,DEMO-HOM-0009,Bright Cleaning Kit 87,Home Essentials,Fictional Trade Co,Brixo,19.42,37.49,True
+P0010,DEMO-KIT-0010,Prime Lunch Jar 38,Kitchen,Demo Supply One,Brixo,24.85,56.13,True
+P0011,DEMO-OFF-0011,Metro Notebook Set 44,Office Gear,Central Test Supply,Fintoro,6.05,14.63,True
+P0012,DEMO-TRA-0012,Metro Luggage Tag 92,Travel,Fictional Trade Co,Fintoro,19.6,34.33,True
+P0013,DEMO-PER-0013,Urban Brush Stand 64,Personal Care,Fictional Trade Co,Brixo,23.65,47.29,True
+P0014,DEMO-PET-0014,Aero Snack Tin 24,Pet Supplies,Northbridge Demo Ltd,Elvara,5.79,9.9,False
+P0015,DEMO-FIT-0015,Urban Hydration Clip 69,Fitness,Demo Supply One,Fintoro,18.34,45.35,True
+P0016,DEMO-ELE-0016,Fresh Tablet Sleeve 24,Electronics Accessories,Demo Supply One,Fintoro,17.97,28.47,True
+P0017,DEMO-HOM-0017,Prime Cleaning Kit 32,Home Essentials,Sample Goods Hub,Fintoro,16.43,25.4,True
+P0018,DEMO-KIT-0018,Clear Spice Rack 57,Kitchen,Central Test Supply,Auralen,27.11,53.83,True
+P0019,DEMO-OFF-0019,Aero Task Lamp 24,Office Gear,Sample Goods Hub,Brixo,39.27,93.65,False
+P0020,DEMO-TRA-0020,Bright Packing Cube 72,Travel,Central Test Supply,Brixo,31.74,77.1,True
+P0021,DEMO-PER-0021,Prime Towel Wrap 31,Personal Care,Northbridge Demo Ltd,Brixo,9.1,22.5,True
+P0022,DEMO-PET-0022,Flex Toy Basket 61,Pet Supplies,Northbridge Demo Ltd,Elvara,23.9,52.58,True
+P0023,DEMO-FIT-0023,Compact Yoga Strap 18,Fitness,Fictional Trade Co,Elvara,12.8,26.99,True
+P0024,DEMO-ELE-0024,Aero Cable Set 39,Electronics Accessories,Sample Goods Hub,Auralen,8.36,12.35,True
+P0025,DEMO-HOM-0025,Nord Cleaning Kit 37,Home Essentials,Central Test Supply,Elvara,17.17,36.07,True
+P0026,DEMO-KIT-0026,Metro Serving Tray 34,Kitchen,Sample Goods Hub,Doventa,7.74,16.2,True
+P0027,DEMO-OFF-0027,Bright Desk Pad 17,Office Gear,Demo Supply One,Brixo,19.0,35.57,True
+P0028,DEMO-TRA-0028,Clear Luggage Tag 64,Travel,Demo Supply One,Doventa,10.24,19.86,True
+P0029,DEMO-PER-0029,Aero Care Pouch 93,Personal Care,Demo Supply One,Brixo,25.98,63.29,True
+P0030,DEMO-PET-0030,Nord Travel Bowl 37,Pet Supplies,Fictional Trade Co,Doventa,21.09,51.72,False
+P0031,DEMO-FIT-0031,Flex Hydration Clip 68,Fitness,Central Test Supply,Fintoro,11.27,24.93,True
+P0032,DEMO-ELE-0032,Compact Charging Stand 47,Electronics Accessories,Central Test Supply,Auralen,14.75,22.12,True
+P0033,DEMO-HOM-0033,Aero Organizer 84,Home Essentials,Central Test Supply,Brixo,15.7,35.76,False
+P0034,DEMO-KIT-0034,Clear Prep Bowl 18,Kitchen,Fictional Trade Co,Doventa,22.26,46.92,True
+P0035,DEMO-OFF-0035,Urban Cable Dock 86,Office Gear,Central Test Supply,Elvara,5.03,8.19,True
+P0036,DEMO-TRA-0036,Compact Bottle Sleeve 95,Travel,Northbridge Demo Ltd,Brixo,28.35,48.95,True
+P0037,DEMO-PER-0037,Nord Brush Stand 50,Personal Care,Demo Supply One,Doventa,24.37,61.8,True
+P0038,DEMO-PET-0038,Bright Snack Tin 78,Pet Supplies,Sample Goods Hub,Auralen,7.08,12.85,True
+P0039,DEMO-FIT-0039,Flex Training Towel 30,Fitness,Sample Goods Hub,Elvara,15.71,32.46,True
+P0040,DEMO-ELE-0040,Prime Cable Set 48,Electronics Accessories,Fictional Trade Co,Cavaro,45.1,69.37,True
+P0041,DEMO-HOM-0041,Prime Organizer 29,Home Essentials,Sample Goods Hub,Brixo,10.9,21.74,True
+P0042,DEMO-KIT-0042,Prime Lunch Jar 72,Kitchen,Demo Supply One,Auralen,12.28,28.46,True
+P0043,DEMO-OFF-0043,Aero Notebook Set 10,Office Gear,Sample Goods Hub,Brixo,16.34,27.36,True
+P0044,DEMO-TRA-0044,Prime Luggage Tag 11,Travel,Fictional Trade Co,Elvara,7.8,18.7,False
+P0045,DEMO-PER-0045,Urban Brush Stand 80,Personal Care,Sample Goods Hub,Cavaro,6.41,11.07,True
+P0046,DEMO-PET-0046,Fresh Snack Tin 36,Pet Supplies,Sample Goods Hub,Elvara,17.16,38.04,True
+P0047,DEMO-FIT-0047,Urban Hydration Clip 29,Fitness,Fictional Trade Co,Brixo,29.85,52.98,True
+P0048,DEMO-ELE-0048,Clear Cable Set 52,Electronics Accessories,Fictional Trade Co,Cavaro,38.75,69.75,True
+P0049,DEMO-HOM-0049,Metro Organizer 14,Home Essentials,Northbridge Demo Ltd,Cavaro,24.68,40.73,True
+P0050,DEMO-KIT-0050,Compact Spice Rack 13,Kitchen,Sample Goods Hub,Auralen,24.14,44.87,True
+P0051,DEMO-OFF-0051,Fresh Notebook Set 92,Office Gear,Central Test Supply,Cavaro,23.11,50.74,True
+P0052,DEMO-TRA-0052,Flex Packing Cube 32,Travel,Demo Supply One,Auralen,23.74,57.79,True
+P0053,DEMO-PER-0053,Fresh Brush Stand 65,Personal Care,Northbridge Demo Ltd,Elvara,16.94,35.77,True
+P0054,DEMO-PET-0054,Metro Snack Tin 10,Pet Supplies,Fictional Trade Co,Cavaro,13.68,32.24,True
+P0055,DEMO-FIT-0055,Urban Training Towel 50,Fitness,Sample Goods Hub,Elvara,22.24,37.11,True
+P0056,DEMO-ELE-0056,Fresh Adapter Pouch 61,Electronics Accessories,Fictional Trade Co,Doventa,35.13,67.49,True
+P0057,DEMO-HOM-0057,Clear Shelf Insert 88,Home Essentials,Demo Supply One,Cavaro,17.87,32.44,True
+P0058,DEMO-KIT-0058,Urban Serving Tray 87,Kitchen,Northbridge Demo Ltd,Fintoro,23.99,46.02,True
+P0059,DEMO-OFF-0059,Clear Task Lamp 94,Office Gear,Central Test Supply,Cavaro,6.76,13.79,True
+P0060,DEMO-TRA-0060,Flex Travel Pouch 38,Travel,Demo Supply One,Brixo,31.42,51.53,True
+P0061,DEMO-PER-0061,Nord Care Pouch 63,Personal Care,Northbridge Demo Ltd,Doventa,23.38,50.87,True
+P0062,DEMO-PET-0062,Aero Toy Basket 23,Pet Supplies,Central Test Supply,Doventa,19.24,34.03,False
+P0063,DEMO-FIT-0063,Bright Yoga Strap 68,Fitness,Central Test Supply,Elvara,6.87,13.68,True
+P0064,DEMO-ELE-0064,Urban Adapter Pouch 74,Electronics Accessories,Northbridge Demo Ltd,Brixo,23.64,52.5,True
+P0065,DEMO-HOM-0065,Nord Shelf Insert 43,Home Essentials,Sample Goods Hub,Elvara,22.17,48.9,True
+P0066,DEMO-KIT-0066,Flex Spice Rack 66,Kitchen,Sample Goods Hub,Cavaro,7.25,12.74,True
+P0067,DEMO-OFF-0067,Clear Desk Pad 29,Office Gear,Fictional Trade Co,Auralen,12.4,27.39,True
+P0068,DEMO-TRA-0068,Prime Bottle Sleeve 69,Travel,Northbridge Demo Ltd,Doventa,18.14,30.77,True
+P0069,DEMO-PER-0069,Urban Care Pouch 58,Personal Care,Sample Goods Hub,Doventa,13.97,35.52,True
+P0070,DEMO-PET-0070,Prime Travel Bowl 79,Pet Supplies,Northbridge Demo Ltd,Brixo,19.7,48.22,True
+P0071,DEMO-FIT-0071,Aero Hydration Clip 59,Fitness,Northbridge Demo Ltd,Fintoro,12.75,27.99,True
+P0072,DEMO-ELE-0072,Clear Adapter Pouch 89,Electronics Accessories,Central Test Supply,Elvara,28.2,62.63,True
+P0073,DEMO-HOM-0073,Metro Organizer 27,Home Essentials,Sample Goods Hub,Doventa,24.87,40.13,True
+P0074,DEMO-KIT-0074,Fresh Serving Tray 53,Kitchen,Northbridge Demo Ltd,Cavaro,27.08,49.86,True
+P0075,DEMO-OFF-0075,Aero Task Lamp 79,Office Gear,Fictional Trade Co,Fintoro,5.51,13.52,False
+P0076,DEMO-TRA-0076,Aero Packing Cube 41,Travel,Fictional Trade Co,Brixo,10.78,16.38,True
+P0077,DEMO-PER-0077,Urban Care Pouch 37,Personal Care,Sample Goods Hub,Brixo,13.7,25.43,True
+P0078,DEMO-PET-0078,Clear Snack Tin 49,Pet Supplies,Sample Goods Hub,Elvara,4.82,7.59,True
+P0079,DEMO-FIT-0079,Metro Hydration Clip 35,Fitness,Fictional Trade Co,Auralen,5.2,11.47,True
+P0080,DEMO-ELE-0080,Urban Tablet Sleeve 25,Electronics Accessories,Demo Supply One,Cavaro,39.34,75.97,True
+P0081,DEMO-HOM-0081,Bright Cleaning Kit 74,Home Essentials,Northbridge Demo Ltd,Doventa,19.72,28.82,True
+P0082,DEMO-KIT-0082,Nord Lunch Jar 29,Kitchen,Sample Goods Hub,Elvara,17.63,38.09,True
+P0083,DEMO-OFF-0083,Nord Task Lamp 65,Office Gear,Sample Goods Hub,Brixo,35.29,74.56,True
+P0084,DEMO-TRA-0084,Flex Packing Cube 67,Travel,Central Test Supply,Fintoro,12.29,23.86,True
+P0085,DEMO-PER-0085,Nord Care Pouch 51,Personal Care,Sample Goods Hub,Cavaro,7.18,13.01,True
+P0086,DEMO-PET-0086,Prime Feeding Mat 11,Pet Supplies,Fictional Trade Co,Fintoro,13.61,23.7,True
+P0087,DEMO-FIT-0087,Nord Yoga Strap 92,Fitness,Demo Supply One,Auralen,23.64,46.71,True
+P0088,DEMO-ELE-0088,Compact Adapter Pouch 49,Electronics Accessories,Central Test Supply,Elvara,33.72,59.47,True
+P0089,DEMO-HOM-0089,Fresh Cleaning Kit 99,Home Essentials,Fictional Trade Co,Auralen,15.16,26.17,True
+P0090,DEMO-KIT-0090,Bright Lunch Jar 78,Kitchen,Fictional Trade Co,Brixo,32.58,69.11,True
+P0091,DEMO-OFF-0091,Urban Notebook Set 77,Office Gear,Fictional Trade Co,Cavaro,26.48,65.71,True
+P0092,DEMO-TRA-0092,Flex Travel Pouch 11,Travel,Demo Supply One,Auralen,28.07,45.48,True
+P0093,DEMO-PER-0093,Nord Mirror Case 23,Personal Care,Northbridge Demo Ltd,Doventa,23.07,50.16,True
+P0094,DEMO-PET-0094,Aero Toy Basket 42,Pet Supplies,Demo Supply One,Doventa,22.73,46.09,True
+P0095,DEMO-FIT-0095,Clear Grip Band 29,Fitness,Demo Supply One,Brixo,26.52,65.02,True
+P0096,DEMO-ELE-0096,Urban Adapter Pouch 86,Electronics Accessories,Central Test Supply,Doventa,39.11,64.21,True
+P0097,DEMO-HOM-0097,Flex Shelf Insert 85,Home Essentials,Central Test Supply,Auralen,27.77,47.9,True
+P0098,DEMO-KIT-0098,Compact Prep Bowl 90,Kitchen,Fictional Trade Co,Brixo,11.12,23.29,True
+P0099,DEMO-OFF-0099,Clear Desk Pad 10,Office Gear,Northbridge Demo Ltd,Cavaro,19.23,42.4,False
+P0100,DEMO-TRA-0100,Flex Bottle Sleeve 99,Travel,Fictional Trade Co,Cavaro,33.23,52.09,True
+P0101,DEMO-PER-0101,Metro Mirror Case 24,Personal Care,Sample Goods Hub,Brixo,15.52,34.88,False
+P0102,DEMO-PET-0102,Flex Toy Basket 86,Pet Supplies,Sample Goods Hub,Doventa,18.6,39.42,True
+P0103,DEMO-FIT-0103,Metro Training Towel 44,Fitness,Demo Supply One,Elvara,17.51,35.35,False
+P0104,DEMO-ELE-0104,Fresh Adapter Pouch 87,Electronics Accessories,Central Test Supply,Elvara,16.14,24.66,True
+P0105,DEMO-HOM-0105,Urban Cleaning Kit 15,Home Essentials,Central Test Supply,Fintoro,22.43,36.06,True
+P0106,DEMO-KIT-0106,Clear Lunch Jar 84,Kitchen,Demo Supply One,Doventa,17.64,39.39,True
+P0107,DEMO-OFF-0107,Fresh Notebook Set 95,Office Gear,Northbridge Demo Ltd,Fintoro,7.53,12.82,True
+P0108,DEMO-TRA-0108,Prime Luggage Tag 14,Travel,Sample Goods Hub,Auralen,19.46,35.0,True
+P0109,DEMO-PER-0109,Prime Towel Wrap 10,Personal Care,Northbridge Demo Ltd,Auralen,18.13,38.85,True
+P0110,DEMO-PET-0110,Urban Feeding Mat 73,Pet Supplies,Fictional Trade Co,Cavaro,15.95,36.84,True
+P0111,DEMO-FIT-0111,Nord Training Towel 99,Fitness,Central Test Supply,Brixo,17.06,26.91,True
+P0112,DEMO-ELE-0112,Prime Tablet Sleeve 11,Electronics Accessories,Demo Supply One,Doventa,28.97,44.3,True
+P0113,DEMO-HOM-0113,Nord Storage Box 47,Home Essentials,Northbridge Demo Ltd,Doventa,16.46,27.92,True
+P0114,DEMO-KIT-0114,Metro Spice Rack 34,Kitchen,Fictional Trade Co,Auralen,31.73,62.11,True
+P0115,DEMO-OFF-0115,Fresh Task Lamp 74,Office Gear,Sample Goods Hub,Elvara,13.79,21.41,True
+P0116,DEMO-TRA-0116,Clear Luggage Tag 67,Travel,Central Test Supply,Elvara,22.31,40.78,True
+P0117,DEMO-PER-0117,Compact Brush Stand 99,Personal Care,Northbridge Demo Ltd,Auralen,8.49,16.84,True
+P0118,DEMO-PET-0118,Metro Travel Bowl 59,Pet Supplies,Fictional Trade Co,Doventa,23.75,55.63,True
+P0119,DEMO-FIT-0119,Prime Yoga Strap 85,Fitness,Northbridge Demo Ltd,Auralen,12.63,20.78,True
+P0120,DEMO-ELE-0120,Aero Adapter Pouch 28,Electronics Accessories,Fictional Trade Co,Auralen,22.92,45.99,True
