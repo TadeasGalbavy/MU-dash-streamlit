@@ -24,6 +24,27 @@ def create_revenue_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
     )
 
 
+def create_monthly_revenue_chart(orders_model: pd.DataFrame) -> go.Figure:
+    """Create a revenue by month chart."""
+    if _is_empty_or_missing(orders_model, {"order_date", "revenue"}):
+        return _empty_chart("Revenue by month")
+
+    chart_data = _with_month(orders_model).groupby("month", as_index=False)[
+        "revenue"
+    ].sum()
+
+    if chart_data.empty:
+        return _empty_chart("Revenue by month")
+
+    return px.bar(
+        chart_data,
+        x="month",
+        y="revenue",
+        title="Revenue by month",
+        labels={"month": "Month", "revenue": "Revenue"},
+    )
+
+
 def create_orders_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
     """Create a monthly order count trend chart."""
     if _is_empty_or_missing(orders_model, {"order_date", "order_id"}):
