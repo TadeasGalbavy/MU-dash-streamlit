@@ -9,6 +9,7 @@ from src.charts import (
 from src.data_loader import load_all_data_files
 from src.metrics import (
     calculate_average_order_value,
+    calculate_top_products_by_revenue,
     calculate_total_orders,
     calculate_total_quantity,
     calculate_total_revenue,
@@ -80,3 +81,29 @@ st.plotly_chart(
     create_revenue_by_category_donut_chart(filtered_orders_model),
     use_container_width=True,
 )
+
+st.subheader("Top products by revenue")
+top_products = calculate_top_products_by_revenue(filtered_orders_model)
+
+if top_products.empty:
+    st.warning("No product revenue data are available for the selected country filter.")
+else:
+    st.dataframe(
+        top_products,
+        hide_index=True,
+        use_container_width=True,
+        column_config={
+            "Revenue": st.column_config.NumberColumn(
+                "Revenue",
+                format="%.2f EUR",
+            ),
+            "Items sold": st.column_config.NumberColumn(
+                "Items sold",
+                format="%d",
+            ),
+            "Orders": st.column_config.NumberColumn(
+                "Orders",
+                format="%d",
+            ),
+        },
+    )

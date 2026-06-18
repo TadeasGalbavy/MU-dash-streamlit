@@ -44,6 +44,57 @@ def calculate_average_order_value(orders_model: pd.DataFrame) -> float:
     return float(order_revenue["revenue"].mean())
 
 
+def calculate_top_products_by_revenue(
+    orders_model: pd.DataFrame,
+    limit: int = 10,
+) -> pd.DataFrame:
+    """Return top products aggregated by revenue."""
+    required_columns = {
+        "product_name",
+        "category",
+        "revenue",
+        "quantity",
+        "order_id",
+    }
+    output_columns = ["Product", "Category", "Revenue", "Items sold", "Orders"]
+
+    if (
+        orders_model is None
+        or orders_model.empty
+        or not required_columns.issubset(orders_model.columns)
+    ):
+        return pd.DataFrame(columns=output_columns)
+
+    top_products = (
+        orders_model.assign(
+            revenue=pd.to_numeric(orders_model["revenue"], errors="coerce").fillna(0),
+            quantity=pd.to_numeric(orders_model["quantity"], errors="coerce").fillna(0),
+        )
+        .groupby(["product_name", "category"], as_index=False)
+        .agg(
+            revenue=("revenue", "sum"),
+            quantity=("quantity", "sum"),
+            order_id=("order_id", "nunique"),
+        )
+        .sort_values("revenue", ascending=False)
+        .head(limit)
+        .rename(
+            columns={
+                "product_name": "Product",
+                "category": "Category",
+                "revenue": "Revenue",
+                "quantity": "Items sold",
+                "order_id": "Orders",
+            }
+        )
+    )
+
+    top_products["Items sold"] = top_products["Items sold"].astype(int)
+    top_products["Orders"] = top_products["Orders"].astype(int)
+
+    return top_products[output_columns]
+
+
 def calculate_active_products(products_df: pd.DataFrame) -> int:
     """Calculate the number of active products."""
     if _is_empty_or_missing(products_df, "active"):
