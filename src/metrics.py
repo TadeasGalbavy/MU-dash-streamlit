@@ -16,6 +16,25 @@ def calculate_total_orders(orders_model: pd.DataFrame) -> int:
     return int(orders_model["order_id"].nunique())
 
 
+def calculate_orders_by_status(orders_model: pd.DataFrame, order_status: str) -> int:
+    """Calculate the number of unique orders for a single order status."""
+    if (
+        orders_model is None
+        or orders_model.empty
+        or not {"order_id", "order_status"}.issubset(orders_model.columns)
+    ):
+        return 0
+
+    matching_orders = orders_model[
+        orders_model["order_status"].astype(str).str.lower() == order_status.lower()
+    ]
+
+    if matching_orders.empty:
+        return 0
+
+    return int(matching_orders["order_id"].nunique())
+
+
 def calculate_total_quantity(orders_model: pd.DataFrame) -> int:
     """Calculate the number of sold items."""
     return int(_sum_column(orders_model, "quantity"))

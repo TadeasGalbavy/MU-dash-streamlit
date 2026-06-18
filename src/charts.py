@@ -70,6 +70,30 @@ def create_orders_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
     )
 
 
+def create_orders_by_status_chart(orders_model: pd.DataFrame) -> go.Figure:
+    """Create an order count by status chart."""
+    if _is_empty_or_missing(orders_model, {"order_status", "order_id"}):
+        return _empty_chart("Orders by status")
+
+    chart_data = (
+        orders_model.groupby("order_status", as_index=False)["order_id"]
+        .nunique()
+        .rename(columns={"order_id": "orders"})
+        .sort_values("orders", ascending=False)
+    )
+
+    if chart_data.empty:
+        return _empty_chart("Orders by status")
+
+    return px.bar(
+        chart_data,
+        x="order_status",
+        y="orders",
+        title="Orders by status",
+        labels={"order_status": "Order status", "orders": "Orders"},
+    )
+
+
 def create_revenue_by_country_chart(orders_model: pd.DataFrame) -> go.Figure:
     """Create a revenue by country chart."""
     if _is_empty_or_missing(orders_model, {"country", "revenue"}):

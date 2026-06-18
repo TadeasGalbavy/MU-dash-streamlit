@@ -88,6 +88,58 @@ def prepare_latest_stock_snapshot(data: dict) -> pd.DataFrame:
     return latest_stock
 
 
+def prepare_latest_orders_table(
+    orders_model: pd.DataFrame,
+    limit: int = 10,
+) -> pd.DataFrame:
+    """Return the latest unique orders with order-level revenue."""
+    output_columns = [
+        "order_id",
+        "order_date",
+        "country",
+        "customer_type",
+        "order_status",
+        "payment_method",
+        "shipping_method",
+        "revenue",
+    ]
+    required_columns = set(output_columns)
+
+    if (
+        orders_model is None
+        or orders_model.empty
+        or not required_columns.issubset(orders_model.columns)
+    ):
+        return pd.DataFrame(columns=output_columns)
+
+    orders_table = orders_model.copy()
+    orders_table["order_date"] = pd.to_datetime(
+        orders_table["order_date"],
+        errors="coerce",
+    )
+    orders_table["revenue"] = pd.to_numeric(
+        orders_table["revenue"],
+        errors="coerce",
+    ).fillna(0)
+
+    latest_orders = (
+        orders_table.groupby("order_id", as_index=False)
+        .agg(
+            order_date=("order_date", "max"),
+            country=("country", "first"),
+            customer_type=("customer_type", "first"),
+            order_status=("order_status", "first"),
+            payment_method=("payment_method", "first"),
+            shipping_method=("shipping_method", "first"),
+            revenue=("revenue", "sum"),
+        )
+        .sort_values("order_date", ascending=False)
+        .head(limit)
+    )
+
+    return latest_orders[output_columns]
+
+
 def _require_files(data: dict, required_files: set[str]) -> None:
     """Raise a clear error when expected source files are missing."""
     missing_files = sorted(required_files - set(data))
