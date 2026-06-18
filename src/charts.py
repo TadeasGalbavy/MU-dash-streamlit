@@ -160,6 +160,34 @@ def create_revenue_by_category_donut_chart(orders_model: pd.DataFrame) -> go.Fig
     )
 
 
+def create_stock_value_by_category_chart(stock_df: pd.DataFrame) -> go.Figure:
+    """Create a stock value by category chart."""
+    if _is_empty_or_missing(stock_df, {"category", "stock_value"}):
+        return _empty_chart("Stock value by category")
+
+    chart_df = stock_df.copy()
+    chart_df["stock_value"] = pd.to_numeric(
+        chart_df["stock_value"],
+        errors="coerce",
+    ).fillna(0)
+    chart_data = (
+        chart_df.groupby("category", as_index=False)["stock_value"]
+        .sum()
+        .sort_values("stock_value", ascending=False)
+    )
+
+    if chart_data.empty:
+        return _empty_chart("Stock value by category")
+
+    return px.bar(
+        chart_data,
+        x="category",
+        y="stock_value",
+        title="Stock value by category",
+        labels={"category": "Category", "stock_value": "Stock value"},
+    )
+
+
 def _with_month(df: pd.DataFrame) -> pd.DataFrame:
     chart_df = df.copy()
     chart_df["order_date"] = pd.to_datetime(chart_df["order_date"], errors="coerce")

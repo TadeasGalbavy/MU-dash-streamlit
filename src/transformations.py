@@ -140,6 +140,44 @@ def prepare_latest_orders_table(
     return latest_orders[output_columns]
 
 
+def prepare_top_stock_value_products(
+    stock_df: pd.DataFrame,
+    limit: int = 10,
+) -> pd.DataFrame:
+    """Return products with the highest current stock value."""
+    output_columns = [
+        "product_name",
+        "category",
+        "supplier",
+        "stock_qty",
+        "stock_value",
+    ]
+    required_columns = set(output_columns)
+
+    if (
+        stock_df is None
+        or stock_df.empty
+        or not required_columns.issubset(stock_df.columns)
+    ):
+        return pd.DataFrame(columns=output_columns)
+
+    top_products = stock_df.copy()
+    top_products["stock_qty"] = pd.to_numeric(
+        top_products["stock_qty"],
+        errors="coerce",
+    ).fillna(0)
+    top_products["stock_value"] = pd.to_numeric(
+        top_products["stock_value"],
+        errors="coerce",
+    ).fillna(0)
+
+    return (
+        top_products.sort_values("stock_value", ascending=False)
+        .head(limit)[output_columns]
+        .reset_index(drop=True)
+    )
+
+
 def _require_files(data: dict, required_files: set[str]) -> None:
     """Raise a clear error when expected source files are missing."""
     missing_files = sorted(required_files - set(data))

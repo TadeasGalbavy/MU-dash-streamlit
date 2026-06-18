@@ -132,11 +132,43 @@ def calculate_latest_stock_value(latest_stock_df: pd.DataFrame) -> float:
     return _sum_column(latest_stock_df, "stock_value")
 
 
+def calculate_total_stock_quantity(stock_df: pd.DataFrame) -> int:
+    """Calculate total stock quantity."""
+    return int(_sum_column(stock_df, "stock_qty"))
+
+
+def calculate_products_in_stock(stock_df: pd.DataFrame) -> int:
+    """Calculate the number of unique products with stock available."""
+    return _count_products_by_stock_condition(stock_df, lambda stock_qty: stock_qty > 0)
+
+
+def calculate_out_of_stock_products(stock_df: pd.DataFrame) -> int:
+    """Calculate the number of unique products with no stock available."""
+    return _count_products_by_stock_condition(stock_df, lambda stock_qty: stock_qty == 0)
+
+
 def _sum_column(df: pd.DataFrame, column: str) -> float:
     if _is_empty_or_missing(df, column):
         return 0.0
 
     return float(pd.to_numeric(df[column], errors="coerce").fillna(0).sum())
+
+
+def _count_products_by_stock_condition(df: pd.DataFrame, condition) -> int:
+    if (
+        df is None
+        or df.empty
+        or not {"product_id", "stock_qty"}.issubset(df.columns)
+    ):
+        return 0
+
+    stock_qty = pd.to_numeric(df["stock_qty"], errors="coerce").fillna(0)
+    matching_products = df[condition(stock_qty)]
+
+    if matching_products.empty:
+        return 0
+
+    return int(matching_products["product_id"].nunique())
 
 
 def _is_empty_or_missing(df: pd.DataFrame, column: str) -> bool:
