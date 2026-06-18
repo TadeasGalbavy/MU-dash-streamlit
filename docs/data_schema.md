@@ -1,4 +1,4 @@
-# Data Schema
+codex# Data Schema
 
 This project includes fictional sample data for the demo e-commerce dashboard.
 The files are safe to keep in GitHub and do not contain real company,

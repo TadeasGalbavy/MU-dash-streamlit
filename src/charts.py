@@ -5,6 +5,23 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
+BACKGROUND_COLOR = "#0d0d0d"
+SURFACE_COLOR = "#141414"
+BORDER_COLOR = "#222"
+TEXT_COLOR = "#f0ede8"
+SOFT_TEXT_COLOR = "#a8a49e"
+DATA_ACCENT_COLOR = "#c8f060"
+SECONDARY_ACCENT_COLOR = "#FFBBFF"
+CHART_COLOR_SEQUENCE = [
+    DATA_ACCENT_COLOR,
+    SECONDARY_ACCENT_COLOR,
+    "#8bd3ff",
+    "#f6d365",
+    "#b8a7ff",
+    "#7ee0c6",
+]
+
+
 def create_revenue_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
     """Create a monthly revenue trend chart."""
     if _is_empty_or_missing(orders_model, {"order_date", "revenue"}):
@@ -14,7 +31,7 @@ def create_revenue_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
         "revenue"
     ].sum()
 
-    return px.line(
+    figure = px.line(
         chart_data,
         x="month",
         y="revenue",
@@ -22,6 +39,8 @@ def create_revenue_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
         title="Revenue over time",
         labels={"month": "Month", "revenue": "Revenue"},
     )
+
+    return _apply_dark_chart_theme(figure)
 
 
 def create_monthly_revenue_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -36,6 +55,7 @@ def create_monthly_revenue_chart(orders_model: pd.DataFrame) -> go.Figure:
     if chart_data.empty:
         return _empty_chart("Monthly revenue")
 
+    chart_data["revenue_label"] = chart_data["revenue"].round(0)
     figure = px.line(
         chart_data,
         x="month",
@@ -46,7 +66,15 @@ def create_monthly_revenue_chart(orders_model: pd.DataFrame) -> go.Figure:
     )
     figure.update_traces(name="Revenue (€)", showlegend=True)
 
-    return figure
+    if len(chart_data) <= 12:
+        figure.update_traces(
+            mode="lines+markers+text",
+            text=chart_data["revenue_label"],
+            texttemplate="%{text:,.0f}",
+            textposition="top center",
+        )
+
+    return _apply_dark_chart_theme(figure)
 
 
 def create_orders_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -61,13 +89,16 @@ def create_orders_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
         .rename(columns={"order_id": "orders"})
     )
 
-    return px.bar(
+    figure = px.bar(
         chart_data,
         x="month",
         y="orders",
+        text="orders",
         title="Orders over time",
         labels={"month": "Month", "orders": "Orders"},
     )
+
+    return _apply_dark_chart_theme(_apply_bar_value_labels(figure, "%{text:,.0f}"))
 
 
 def create_orders_by_status_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -85,13 +116,16 @@ def create_orders_by_status_chart(orders_model: pd.DataFrame) -> go.Figure:
     if chart_data.empty:
         return _empty_chart("Orders by status")
 
-    return px.bar(
+    figure = px.bar(
         chart_data,
         x="order_status",
         y="orders",
+        text="orders",
         title="Orders by status",
         labels={"order_status": "Order status", "orders": "Orders"},
     )
+
+    return _apply_dark_chart_theme(_apply_bar_value_labels(figure, "%{text:,.0f}"))
 
 
 def create_revenue_by_country_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -104,14 +138,18 @@ def create_revenue_by_country_chart(orders_model: pd.DataFrame) -> go.Figure:
         .sum()
         .sort_values("revenue", ascending=False)
     )
+    chart_data["revenue_label"] = chart_data["revenue"].round(0)
 
-    return px.bar(
+    figure = px.bar(
         chart_data,
         x="country",
         y="revenue",
+        text="revenue_label",
         title="Revenue by country",
         labels={"country": "Country", "revenue": "Revenue"},
     )
+
+    return _apply_dark_chart_theme(_apply_bar_value_labels(figure, "%{text:,.0f}"))
 
 
 def create_revenue_by_category_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -124,15 +162,19 @@ def create_revenue_by_category_chart(orders_model: pd.DataFrame) -> go.Figure:
         .sum()
         .sort_values("revenue", ascending=True)
     )
+    chart_data["revenue_label"] = chart_data["revenue"].round(0)
 
-    return px.bar(
+    figure = px.bar(
         chart_data,
         x="revenue",
         y="category",
+        text="revenue_label",
         orientation="h",
         title="Revenue by category",
         labels={"category": "Category", "revenue": "Revenue"},
     )
+
+    return _apply_dark_chart_theme(_apply_bar_value_labels(figure, "%{text:,.0f}"))
 
 
 def create_revenue_by_category_donut_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -151,13 +193,21 @@ def create_revenue_by_category_donut_chart(orders_model: pd.DataFrame) -> go.Fig
     if chart_data.empty:
         return _empty_chart("Revenue by category")
 
-    return px.pie(
+    figure = px.pie(
         chart_data,
         names="category",
         values="revenue",
         title="Revenue by category",
         hole=0.45,
+        color_discrete_sequence=CHART_COLOR_SEQUENCE,
     )
+    figure.update_traces(
+        textinfo="label+percent",
+        textposition="inside",
+        insidetextorientation="radial",
+    )
+
+    return _apply_dark_chart_theme(figure)
 
 
 def create_stock_value_by_category_chart(stock_df: pd.DataFrame) -> go.Figure:
@@ -175,17 +225,21 @@ def create_stock_value_by_category_chart(stock_df: pd.DataFrame) -> go.Figure:
         .sum()
         .sort_values("stock_value", ascending=False)
     )
+    chart_data["stock_value_label"] = chart_data["stock_value"].round(0)
 
     if chart_data.empty:
         return _empty_chart("Stock value by category")
 
-    return px.bar(
+    figure = px.bar(
         chart_data,
         x="category",
         y="stock_value",
+        text="stock_value_label",
         title="Stock value by category",
         labels={"category": "Category", "stock_value": "Stock value"},
     )
+
+    return _apply_dark_chart_theme(_apply_bar_value_labels(figure, "%{text:,.0f}"))
 
 
 def _with_month(df: pd.DataFrame) -> pd.DataFrame:
@@ -203,4 +257,63 @@ def _is_empty_or_missing(df: pd.DataFrame, columns: set[str]) -> bool:
 def _empty_chart(title: str) -> go.Figure:
     figure = go.Figure()
     figure.update_layout(title=title)
+    return _apply_dark_chart_theme(figure)
+
+
+def _apply_bar_value_labels(figure: go.Figure, texttemplate: str) -> go.Figure:
+    figure.update_traces(
+        texttemplate=texttemplate,
+        textposition="auto",
+        cliponaxis=False,
+        textfont={"color": TEXT_COLOR},
+    )
+    return figure
+
+
+def _apply_dark_chart_theme(figure: go.Figure) -> go.Figure:
+    figure.update_layout(
+        paper_bgcolor=BACKGROUND_COLOR,
+        plot_bgcolor=SURFACE_COLOR,
+        font={"color": TEXT_COLOR},
+        title={"font": {"color": TEXT_COLOR}},
+        legend={
+            "font": {"color": SOFT_TEXT_COLOR},
+            "bgcolor": "rgba(0,0,0,0)",
+        },
+        margin={"l": 40, "r": 24, "t": 56, "b": 40},
+        uniformtext={"mode": "show", "minsize": 10},
+    )
+    figure.update_xaxes(
+        gridcolor=BORDER_COLOR,
+        linecolor=BORDER_COLOR,
+        tickfont={"color": SOFT_TEXT_COLOR},
+        title_font={"color": TEXT_COLOR},
+        zerolinecolor=BORDER_COLOR,
+    )
+    figure.update_yaxes(
+        gridcolor=BORDER_COLOR,
+        linecolor=BORDER_COLOR,
+        tickfont={"color": SOFT_TEXT_COLOR},
+        title_font={"color": TEXT_COLOR},
+        zerolinecolor=BORDER_COLOR,
+    )
+
+    for trace in figure.data:
+        if trace.type == "scatter":
+            trace.update(
+                line={"color": DATA_ACCENT_COLOR},
+                marker={"color": DATA_ACCENT_COLOR},
+                textfont={"color": TEXT_COLOR},
+            )
+        elif trace.type == "bar":
+            trace.update(
+                marker={"color": DATA_ACCENT_COLOR},
+                textfont={"color": TEXT_COLOR},
+            )
+        elif trace.type == "pie":
+            trace.update(
+                textfont={"color": TEXT_COLOR},
+                marker={"line": {"color": BACKGROUND_COLOR, "width": 2}},
+            )
+
     return figure

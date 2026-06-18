@@ -15,6 +15,7 @@ from src.metrics import (
     calculate_total_revenue,
 )
 from src.transformations import prepare_orders_model
+from src.utils import filter_by_month_range, prepare_month_filter_options
 
 
 st.set_page_config(page_title="Sales", layout="wide")
@@ -34,23 +35,63 @@ if orders_model.empty:
     st.stop()
 
 if "country" not in orders_model.columns:
-    st.warning("Country filter cannot be shown because the orders model has no country column.")
+    st.warning(
+        "Country filter cannot be shown because the orders model has no country column."
+    )
     st.stop()
 
-countries = sorted(orders_model["country"].dropna().unique())
+orders_model, order_months = prepare_month_filter_options(
+    orders_model,
+    "order_date",
+)
+
+if not order_months:
+    st.warning(
+        "Month filter cannot be shown because the orders model "
+        "has no valid order_date values."
+    )
+    st.stop()
+
 with st.expander("Filters", expanded=True):
+    selected_start_month = st.selectbox(
+        "Start month",
+        options=order_months,
+        index=0,
+    )
+    selected_end_month = st.selectbox(
+        "End month",
+        options=order_months,
+        index=len(order_months) - 1,
+    )
+
+    if selected_start_month > selected_end_month:
+        st.warning("Start month must be earlier than or equal to End month.")
+        st.stop()
+
+    month_filtered_orders_model = filter_by_month_range(
+        orders_model,
+        "order_date",
+        selected_start_month,
+        selected_end_month,
+    )
+
+    if month_filtered_orders_model.empty:
+        st.warning("No sales data match the selected month range.")
+        st.stop()
+
+    countries = sorted(month_filtered_orders_model["country"].dropna().unique())
     selected_countries = st.multiselect(
         "Country",
         options=countries,
         default=countries,
     )
 
-filtered_orders_model = orders_model[
-    orders_model["country"].isin(selected_countries)
+filtered_orders_model = month_filtered_orders_model[
+    month_filtered_orders_model["country"].isin(selected_countries)
 ]
 
 if filtered_orders_model.empty:
-    st.warning("No sales data match the selected country filter. Select at least one country.")
+    st.warning("No sales data match the selected month range and country filter.")
     st.stop()
 
 st.divider()
