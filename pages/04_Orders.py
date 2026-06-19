@@ -4,7 +4,10 @@ from datetime import date
 
 import streamlit as st
 
-from src.charts import create_orders_by_status_chart
+from src.charts import (
+    create_orders_by_status_chart,
+    create_orders_over_time_chart,
+)
 from src.data_loader import load_all_data_files
 from src.metrics import calculate_orders_by_status, calculate_total_orders
 from src.transformations import prepare_latest_orders_table, prepare_orders_model
@@ -113,30 +116,50 @@ metric_columns[3].metric("Returned orders", f"{returned_orders:,}")
 
 st.divider()
 
-st.subheader("Orders by status")
+st.subheader("Orders over time")
 st.plotly_chart(
-    create_orders_by_status_chart(filtered_orders_model),
-    width="stretch",
+    create_orders_over_time_chart(filtered_orders_model),
+    use_container_width=True,
 )
 
-st.subheader("Latest orders")
 latest_orders = prepare_latest_orders_table(filtered_orders_model)
-
-if latest_orders.empty:
-    st.warning("No latest order data are available for the selected order status filter.")
-else:
-    st.dataframe(
-        latest_orders,
-        hide_index=True,
-        width="stretch",
-        column_config={
-            "order_date": st.column_config.DateColumn(
-                "order_date",
-                format="YYYY-MM-DD",
-            ),
-            "revenue": st.column_config.NumberColumn(
-                "revenue",
-                format="%.2f EUR",
-            ),
-        },
+bottom_columns = st.columns(2, gap="large")
+with bottom_columns[0]:
+    st.subheader("Orders by status")
+    st.plotly_chart(
+        create_orders_by_status_chart(filtered_orders_model),
+        use_container_width=True,
     )
+
+with bottom_columns[1]:
+    divider_columns = st.columns([0.03, 1], gap="small")
+    with divider_columns[0]:
+        st.markdown(
+            "<div style='height: 500px; border-left: 1px solid #2a2a2a; "
+            "margin: 0 auto;'></div>",
+            unsafe_allow_html=True,
+        )
+
+    with divider_columns[1]:
+        st.subheader("Latest orders")
+
+        if latest_orders.empty:
+            st.warning(
+                "No latest order data are available for the selected order status filter."
+            )
+        else:
+            st.dataframe(
+                latest_orders,
+                hide_index=True,
+                width="stretch",
+                column_config={
+                    "order_date": st.column_config.DateColumn(
+                        "order_date",
+                        format="YYYY-MM-DD",
+                    ),
+                    "revenue": st.column_config.NumberColumn(
+                        "revenue",
+                        format="%.2f EUR",
+                    ),
+                },
+            )

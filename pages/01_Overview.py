@@ -5,8 +5,10 @@ import streamlit as st
 from src.charts import (
     create_monthly_revenue_chart,
     create_orders_by_status_chart,
+    create_orders_by_shipping_method_pie_chart,
     create_revenue_by_country_choropleth_chart,
 )
+from src.config import get_data_mode_label
 from src.data_loader import load_all_data_files
 from src.metrics import (
     calculate_average_order_value,
@@ -42,11 +44,11 @@ except ValueError as exc:
     st.stop()
 
 if orders_model.empty:
-    st.warning("The order model is empty. Check the sample data files.")
+    st.warning("The order model is empty. Check the active data files.")
     st.stop()
 
 if latest_stock.empty:
-    st.warning("The latest stock snapshot is empty. Check the sample data files.")
+    st.warning("The latest stock snapshot is empty. Check the active data files.")
     st.stop()
 
 total_revenue = calculate_total_revenue(orders_model)
@@ -56,7 +58,7 @@ total_quantity = calculate_total_quantity(orders_model)
 latest_stock_value = calculate_latest_stock_value(latest_stock)
 out_of_stock_products = calculate_out_of_stock_products(latest_stock)
 
-st.caption("Active dataset: Sample e-commerce data")
+st.caption(f"Active dataset: {get_data_mode_label()}")
 
 first_row = st.columns(3)
 first_row[0].metric("Total revenue", f"{total_revenue:,.2f} EUR")
@@ -70,20 +72,64 @@ second_row[2].metric("Out of stock products", f"{out_of_stock_products:,}")
 
 st.divider()
 
-st.subheader("Monthly revenue")
-st.plotly_chart(
-    create_monthly_revenue_chart(orders_model),
-    width="stretch",
+monthly_revenue_chart = create_monthly_revenue_chart(orders_model)
+orders_by_status_chart = create_orders_by_status_chart(orders_model)
+revenue_by_country_chart = create_revenue_by_country_choropleth_chart(orders_model)
+orders_by_shipping_method_chart = create_orders_by_shipping_method_pie_chart(
+    orders_model
 )
 
-st.subheader("Orders by status")
-st.plotly_chart(
-    create_orders_by_status_chart(orders_model),
-    width="stretch",
+for figure in (
+    monthly_revenue_chart,
+    orders_by_status_chart,
+    revenue_by_country_chart,
+    orders_by_shipping_method_chart,
+):
+    figure.update_layout(height=440)
+
+vertical_divider = (
+    "<div style='height: 500px; border-left: 1px solid #2a2a2a; "
+    "margin: 0 auto;'></div>"
+)
+horizontal_divider = (
+    "<div style='border-top: 1px solid #2a2a2a; "
+    "margin: 1rem 0 1.25rem 0;'></div>"
 )
 
-st.subheader("Revenue by country")
-st.plotly_chart(
-    create_revenue_by_country_choropleth_chart(orders_model),
-    width="stretch",
-)
+top_chart_columns = st.columns([1, 0.03, 1], gap="medium")
+with top_chart_columns[0]:
+    st.subheader("Monthly revenue")
+    st.plotly_chart(
+        monthly_revenue_chart,
+        use_container_width=True,
+    )
+
+with top_chart_columns[1]:
+    st.markdown(vertical_divider, unsafe_allow_html=True)
+
+with top_chart_columns[2]:
+    st.subheader("Orders by status")
+    st.plotly_chart(
+        orders_by_status_chart,
+        use_container_width=True,
+    )
+
+st.markdown(horizontal_divider, unsafe_allow_html=True)
+
+bottom_chart_columns = st.columns([1, 0.03, 1], gap="medium")
+with bottom_chart_columns[0]:
+    st.subheader("Revenue by country")
+    st.plotly_chart(
+        revenue_by_country_chart,
+        use_container_width=True,
+    )
+
+with bottom_chart_columns[1]:
+    st.markdown(vertical_divider, unsafe_allow_html=True)
+
+with bottom_chart_columns[2]:
+    st.subheader("Orders by shipping method")
+    st.plotly_chart(
+        orders_by_shipping_method_chart,
+        use_container_width=True,
+    )

@@ -105,16 +105,28 @@ def create_orders_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
         .rename(columns={"order_id": "orders"})
     )
 
-    figure = px.bar(
+    if chart_data.empty:
+        return _empty_chart("Orders over time")
+
+    figure = px.line(
         chart_data,
         x="month",
         y="orders",
-        text="orders",
+        markers=True,
         title="Orders over time",
         labels={"month": "Month", "orders": "Orders"},
     )
+    figure.update_traces(name="Orders", showlegend=True)
 
-    return _apply_dark_chart_theme(_apply_bar_value_labels(figure, "%{text:,.0f}"))
+    if len(chart_data) <= 12:
+        figure.update_traces(
+            mode="lines+markers+text",
+            text=chart_data["orders"],
+            texttemplate="%{text:,.0f}",
+            textposition="top center",
+        )
+
+    return _apply_dark_chart_theme(figure)
 
 
 def create_orders_by_status_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -340,6 +352,42 @@ def create_revenue_by_category_donut_chart(orders_model: pd.DataFrame) -> go.Fig
     return _apply_dark_chart_theme(figure)
 
 
+def create_orders_by_shipping_method_pie_chart(
+    orders_model: pd.DataFrame,
+) -> go.Figure:
+    """Create an order count by shipping method donut chart."""
+    if _is_empty_or_missing(orders_model, {"shipping_method", "order_id"}):
+        return _empty_chart("Orders by shipping method")
+
+    chart_data = (
+        orders_model.groupby("shipping_method", as_index=False)["order_id"]
+        .nunique()
+        .rename(columns={"order_id": "orders"})
+        .sort_values("orders", ascending=False)
+    )
+
+    if chart_data.empty:
+        return _empty_chart("Orders by shipping method")
+
+    figure = px.pie(
+        chart_data,
+        names="shipping_method",
+        values="orders",
+        title="Orders by shipping method",
+        hole=0.45,
+        color_discrete_sequence=CHART_COLOR_SEQUENCE,
+    )
+    figure.update_traces(
+        textinfo="percent",
+        textposition="inside",
+        insidetextorientation="radial",
+        textfont={"color": LABEL_TEXT_COLOR},
+        hovertemplate="%{label}<br>Orders: %{value:,.0f}<extra></extra>",
+    )
+
+    return _apply_dark_chart_theme(figure)
+
+
 def create_stock_value_by_category_chart(stock_df: pd.DataFrame) -> go.Figure:
     """Create a stock value by category chart."""
     if _is_empty_or_missing(stock_df, {"category", "stock_value"}):
@@ -370,6 +418,44 @@ def create_stock_value_by_category_chart(stock_df: pd.DataFrame) -> go.Figure:
     )
 
     return _apply_dark_chart_theme(_apply_bar_value_labels(figure, "%{text:,.0f}"))
+
+
+def create_stock_quantity_by_category_chart(stock_df: pd.DataFrame) -> go.Figure:
+    """Create a stock quantity share by category donut chart."""
+    if _is_empty_or_missing(stock_df, {"category", "stock_qty"}):
+        return _empty_chart("Stock quantity share by category")
+
+    chart_df = stock_df.copy()
+    chart_df["stock_qty"] = pd.to_numeric(
+        chart_df["stock_qty"],
+        errors="coerce",
+    ).fillna(0)
+    chart_data = (
+        chart_df.groupby("category", as_index=False)["stock_qty"]
+        .sum()
+        .sort_values("stock_qty", ascending=False)
+    )
+
+    if chart_data.empty:
+        return _empty_chart("Stock quantity share by category")
+
+    figure = px.pie(
+        chart_data,
+        names="category",
+        values="stock_qty",
+        title="Stock quantity share by category",
+        hole=0.45,
+        color_discrete_sequence=CHART_COLOR_SEQUENCE,
+    )
+    figure.update_traces(
+        textinfo="percent",
+        textposition="inside",
+        insidetextorientation="radial",
+        textfont={"color": LABEL_TEXT_COLOR},
+        hovertemplate="%{label}<br>Stock quantity: %{value:,.0f}<extra></extra>",
+    )
+
+    return _apply_dark_chart_theme(figure)
 
 
 def _with_month(df: pd.DataFrame) -> pd.DataFrame:

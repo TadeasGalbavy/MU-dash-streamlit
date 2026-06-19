@@ -2,7 +2,10 @@
 
 import streamlit as st
 
-from src.charts import create_stock_value_by_category_chart
+from src.charts import (
+    create_stock_quantity_by_category_chart,
+    create_stock_value_by_category_chart,
+)
 from src.data_loader import load_all_data_files
 from src.metrics import (
     calculate_latest_stock_value,
@@ -73,11 +76,39 @@ metric_columns[3].metric("Out of stock products", f"{out_of_stock_products:,}")
 
 st.divider()
 
-st.subheader("Stock value by category")
-st.plotly_chart(
-    create_stock_value_by_category_chart(filtered_stock_df),
-    width="stretch",
+stock_value_by_category_chart = create_stock_value_by_category_chart(filtered_stock_df)
+stock_quantity_by_category_chart = create_stock_quantity_by_category_chart(
+    filtered_stock_df
 )
+
+for figure in (
+    stock_value_by_category_chart,
+    stock_quantity_by_category_chart,
+):
+    figure.update_layout(height=440)
+
+vertical_divider = (
+    "<div style='height: 500px; border-left: 1px solid #2a2a2a; "
+    "margin: 0 auto;'></div>"
+)
+
+chart_columns = st.columns([1, 0.03, 1], gap="medium")
+with chart_columns[0]:
+    st.subheader("Stock value by category")
+    st.plotly_chart(
+        stock_value_by_category_chart,
+        use_container_width=True,
+    )
+
+with chart_columns[1]:
+    st.markdown(vertical_divider, unsafe_allow_html=True)
+
+with chart_columns[2]:
+    st.subheader("Stock quantity share by category")
+    st.plotly_chart(
+        stock_quantity_by_category_chart,
+        use_container_width=True,
+    )
 
 st.subheader("Top stock value products")
 top_stock_products = prepare_top_stock_value_products(filtered_stock_df)

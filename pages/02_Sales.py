@@ -121,37 +121,51 @@ st.divider()
 st.subheader("Monthly revenue")
 st.plotly_chart(
     create_monthly_revenue_chart(filtered_orders_model),
-    width="stretch",
+    use_container_width=True,
 )
 
-st.subheader("Revenue by category")
-st.plotly_chart(
-    create_revenue_by_category_donut_chart(filtered_orders_model),
-    width="stretch",
-)
-
-st.subheader("Top products by revenue")
 top_products = calculate_top_products_by_revenue(filtered_orders_model)
-
-if top_products.empty:
-    st.warning("No product revenue data are available for the selected country filter.")
-else:
-    st.dataframe(
-        top_products,
-        hide_index=True,
-        width="stretch",
-        column_config={
-            "Revenue": st.column_config.NumberColumn(
-                "Revenue",
-                format="%.2f EUR",
-            ),
-            "Items sold": st.column_config.NumberColumn(
-                "Items sold",
-                format="%d",
-            ),
-            "Orders": st.column_config.NumberColumn(
-                "Orders",
-                format="%d",
-            ),
-        },
+bottom_columns = st.columns(2, gap="large")
+with bottom_columns[0]:
+    st.subheader("Revenue by category")
+    st.plotly_chart(
+        create_revenue_by_category_donut_chart(filtered_orders_model),
+        use_container_width=True,
     )
+
+with bottom_columns[1]:
+    divider_columns = st.columns([0.03, 1], gap="small")
+    with divider_columns[0]:
+        st.markdown(
+            "<div style='height: 500px; border-left: 1px solid #2a2a2a; "
+            "margin: 0 auto;'></div>",
+            unsafe_allow_html=True,
+        )
+
+    with divider_columns[1]:
+        st.subheader("Top 10 bestsellers")
+
+        if top_products.empty:
+            st.warning(
+                "No product revenue data are available for the selected country filter."
+            )
+        else:
+            st.dataframe(
+                top_products,
+                hide_index=True,
+                width="stretch",
+                column_config={
+                    "Revenue": st.column_config.NumberColumn(
+                        "Revenue",
+                        format="%.2f EUR",
+                    ),
+                    "Items sold": st.column_config.NumberColumn(
+                        "Items sold",
+                        format="%d",
+                    ),
+                    "Orders": st.column_config.NumberColumn(
+                        "Orders",
+                        format="%d",
+                    ),
+                },
+            )

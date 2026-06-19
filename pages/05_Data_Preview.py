@@ -3,6 +3,7 @@
 import pandas as pd
 import streamlit as st
 
+from src.config import get_data_mode_label
 from src.data_loader import list_data_files, load_data_file
 from src.data_validation import get_dataframe_summary
 
@@ -17,9 +18,9 @@ except ValueError as exc:
     st.error(str(exc))
     st.stop()
 
-st.info("Active dataset: Sample e-commerce data")
+st.info(f"Active dataset: {get_data_mode_label()}")
 st.caption(
-    "Raw exports contain sample data in demo mode. Handle raw exports carefully "
+    "Raw exports are shown for the active data mode. Handle raw exports carefully "
     "when using internal or private data."
 )
 
