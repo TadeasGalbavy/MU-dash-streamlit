@@ -114,13 +114,13 @@ st.divider()
 st.subheader("Monthly revenue")
 st.plotly_chart(
     create_monthly_revenue_chart(filtered_orders_model),
-    use_container_width=True,
+    width="stretch",
 )
 
 st.subheader("Revenue by category")
 st.plotly_chart(
     create_revenue_by_category_donut_chart(filtered_orders_model),
-    use_container_width=True,
+    width="stretch",
 )
 
 st.subheader("Top products by revenue")
@@ -132,7 +132,7 @@ else:
     st.dataframe(
         top_products,
         hide_index=True,
-        use_container_width=True,
+        width="stretch",
         column_config={
             "Revenue": st.column_config.NumberColumn(
                 "Revenue",

@@ -73,11 +73,11 @@ st.divider()
 st.subheader("Monthly revenue")
 st.plotly_chart(
     create_monthly_revenue_chart(orders_model),
-    use_container_width=True,
+    width="stretch",
 )
 
 st.subheader("Orders by status")
 st.plotly_chart(
     create_orders_by_status_chart(orders_model),
-    use_container_width=True,
+    width="stretch",
 )

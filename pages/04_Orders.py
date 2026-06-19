@@ -109,7 +109,7 @@ st.divider()
 st.subheader("Orders by status")
 st.plotly_chart(
     create_orders_by_status_chart(filtered_orders_model),
-    use_container_width=True,
+    width="stretch",
 )
 
 st.subheader("Latest orders")
@@ -121,7 +121,7 @@ else:
     st.dataframe(
         latest_orders,
         hide_index=True,
-        use_container_width=True,
+        width="stretch",
         column_config={
             "order_date": st.column_config.DateColumn(
                 "order_date",

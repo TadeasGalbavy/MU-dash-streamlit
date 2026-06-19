@@ -76,7 +76,7 @@ st.divider()
 st.subheader("Stock value by category")
 st.plotly_chart(
     create_stock_value_by_category_chart(filtered_stock_df),
-    use_container_width=True,
+    width="stretch",
 )
 
 st.subheader("Top stock value products")
@@ -90,7 +90,7 @@ else:
     st.dataframe(
         top_stock_products,
         hide_index=True,
-        use_container_width=True,
+        width="stretch",
         column_config={
             "stock_qty": st.column_config.NumberColumn(
                 "stock_qty",

@@ -32,7 +32,7 @@ if not data_files:
 st.write("Found data files:")
 st.dataframe(
     pd.DataFrame({"file_name": [file_path.name for file_path in data_files]}),
-    use_container_width=True,
+    width="stretch",
     hide_index=True,
 )
 
@@ -60,7 +60,7 @@ for file_path in data_files:
                     ],
                 }
             ),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
@@ -75,9 +75,9 @@ for file_path in data_files:
                     ],
                 }
             ),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
 
         st.write("First 10 rows")
-        st.dataframe(df.head(10), use_container_width=True)
+        st.dataframe(df.head(10), width="stretch")
