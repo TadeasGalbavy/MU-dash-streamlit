@@ -3,8 +3,7 @@
 import pandas as pd
 import streamlit as st
 
-from src.config import DATA_MODE
-from src.data_loader import get_active_data_dir, list_data_files, load_data_file
+from src.data_loader import list_data_files, load_data_file
 from src.data_validation import get_dataframe_summary
 
 
@@ -13,14 +12,16 @@ st.set_page_config(page_title="Data Preview", layout="wide")
 st.title("Data Preview")
 
 try:
-    active_data_dir = get_active_data_dir()
     data_files = list_data_files()
 except ValueError as exc:
     st.error(str(exc))
     st.stop()
 
-st.info(f"Current data mode: `{DATA_MODE}`")
-st.write(f"Active data directory: `{active_data_dir}`")
+st.info("Active dataset: Sample e-commerce data")
+st.caption(
+    "Raw exports contain sample data in demo mode. Handle raw exports carefully "
+    "when using internal or private data."
+)
 
 if not data_files:
     st.info(
@@ -49,6 +50,16 @@ for file_path in data_files:
             f"Rows: `{summary['row_count']}` | "
             f"Columns: `{summary['column_count']}`"
         )
+
+        if not df.empty:
+            download_file_name = file_path.with_suffix(".csv").name
+            st.download_button(
+                "Download raw CSV",
+                data=df.to_csv(index=False).encode("utf-8"),
+                file_name=download_file_name,
+                mime="text/csv",
+                key=f"download-{file_path.name}",
+            )
 
         st.write("Data types")
         st.dataframe(

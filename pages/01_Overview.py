@@ -6,7 +6,7 @@ from src.charts import (
     create_monthly_revenue_chart,
     create_orders_by_status_chart,
 )
-from src.data_loader import get_active_data_dir, load_all_data_files
+from src.data_loader import load_all_data_files
 from src.metrics import (
     calculate_average_order_value,
     calculate_latest_stock_value,
@@ -24,14 +24,13 @@ st.title("Executive overview")
 st.write("Managerial overview of sales, orders, and current stock position.")
 
 try:
-    active_data_dir = get_active_data_dir()
     data = load_all_data_files()
 except ValueError as exc:
     st.error(str(exc))
     st.stop()
 
 if not data:
-    st.warning(f"No data files were found in `{active_data_dir}`.")
+    st.warning("No data files were found in the active dataset.")
     st.stop()
 
 try:
@@ -56,7 +55,7 @@ total_quantity = calculate_total_quantity(orders_model)
 latest_stock_value = calculate_latest_stock_value(latest_stock)
 out_of_stock_products = calculate_out_of_stock_products(latest_stock)
 
-st.caption(f"Data source: `{active_data_dir}`")
+st.caption("Active dataset: Sample e-commerce data")
 
 first_row = st.columns(3)
 first_row[0].metric("Total revenue", f"{total_revenue:,.2f} EUR")

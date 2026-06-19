@@ -6,7 +6,7 @@ from src.charts import create_orders_by_status_chart
 from src.data_loader import load_all_data_files
 from src.metrics import calculate_orders_by_status, calculate_total_orders
 from src.transformations import prepare_latest_orders_table, prepare_orders_model
-from src.utils import filter_by_month_range, prepare_month_filter_options
+from src.utils import filter_by_date_range, prepare_date_filter_bounds
 
 
 st.set_page_config(page_title="Orders", layout="wide")
@@ -32,47 +32,49 @@ if "order_status" not in orders_model.columns:
     )
     st.stop()
 
-orders_model, order_months = prepare_month_filter_options(
+orders_model, min_order_date, max_order_date = prepare_date_filter_bounds(
     orders_model,
     "order_date",
 )
 
-if not order_months:
+if min_order_date is None or max_order_date is None:
     st.warning(
-        "Month filter cannot be shown because the orders model "
+        "Date filter cannot be shown because the orders model "
         "has no valid order_date values."
     )
     st.stop()
 
-with st.expander("Filters", expanded=True):
-    selected_start_month = st.selectbox(
-        "Start month",
-        options=order_months,
-        index=0,
+with st.expander("Filters", expanded=False):
+    date_columns = st.columns(2)
+    selected_start_date = date_columns[0].date_input(
+        "Start date",
+        value=min_order_date,
+        min_value=min_order_date,
+        max_value=max_order_date,
     )
-    selected_end_month = st.selectbox(
-        "End month",
-        options=order_months,
-        index=len(order_months) - 1,
+    selected_end_date = date_columns[1].date_input(
+        "End date",
+        value=max_order_date,
+        min_value=min_order_date,
+        max_value=max_order_date,
     )
 
-    if selected_start_month > selected_end_month:
-        st.warning("Start month must be earlier than or equal to End month.")
+    if selected_start_date > selected_end_date:
+        st.warning("Start date must be earlier than or equal to End date.")
         st.stop()
 
-    month_filtered_orders_model = filter_by_month_range(
+    date_filtered_orders_model = filter_by_date_range(
         orders_model,
         "order_date",
-        selected_start_month,
-        selected_end_month,
+        (selected_start_date, selected_end_date),
     )
 
-    if month_filtered_orders_model.empty:
-        st.warning("No orders match the selected month range.")
+    if date_filtered_orders_model.empty:
+        st.warning("No orders match the selected date range.")
         st.stop()
 
     order_statuses = sorted(
-        month_filtered_orders_model["order_status"].dropna().unique()
+        date_filtered_orders_model["order_status"].dropna().unique()
     )
     selected_order_statuses = st.multiselect(
         "Order status",
@@ -80,13 +82,13 @@ with st.expander("Filters", expanded=True):
         default=order_statuses,
     )
 
-filtered_orders_model = month_filtered_orders_model[
-    month_filtered_orders_model["order_status"].isin(selected_order_statuses)
+filtered_orders_model = date_filtered_orders_model[
+    date_filtered_orders_model["order_status"].isin(selected_order_statuses)
 ]
 
 if filtered_orders_model.empty:
     st.warning(
-        "No orders match the selected month range and order status filter."
+        "No orders match the selected date range and order status filter."
     )
     st.stop()
 

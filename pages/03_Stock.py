@@ -40,7 +40,7 @@ if "category" not in latest_stock_df.columns:
     st.stop()
 
 categories = sorted(latest_stock_df["category"].dropna().unique())
-with st.expander("Filters", expanded=True):
+with st.expander("Filters", expanded=False):
     selected_categories = st.multiselect(
         "Category",
         options=categories,
