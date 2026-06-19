@@ -5,6 +5,7 @@ import streamlit as st
 from src.charts import (
     create_monthly_revenue_chart,
     create_orders_by_status_chart,
+    create_revenue_by_country_choropleth_chart,
 )
 from src.data_loader import load_all_data_files
 from src.metrics import (
@@ -78,5 +79,11 @@ st.plotly_chart(
 st.subheader("Orders by status")
 st.plotly_chart(
     create_orders_by_status_chart(orders_model),
+    width="stretch",
+)
+
+st.subheader("Revenue by country")
+st.plotly_chart(
+    create_revenue_by_country_choropleth_chart(orders_model),
     width="stretch",
 )

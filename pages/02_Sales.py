@@ -1,5 +1,7 @@
 """Sales analysis page."""
 
+from datetime import date
+
 import streamlit as st
 
 from src.charts import (
@@ -52,19 +54,22 @@ if min_order_date is None or max_order_date is None:
     )
     st.stop()
 
+date_picker_min = date(min_order_date.year, 1, 1)
+date_picker_max = date(max_order_date.year, 12, 31)
+
 with st.expander("Filters", expanded=False):
     date_columns = st.columns(2)
     selected_start_date = date_columns[0].date_input(
         "Start date",
         value=min_order_date,
-        min_value=min_order_date,
-        max_value=max_order_date,
+        min_value=date_picker_min,
+        max_value=date_picker_max,
     )
     selected_end_date = date_columns[1].date_input(
         "End date",
         value=max_order_date,
-        min_value=min_order_date,
-        max_value=max_order_date,
+        min_value=date_picker_min,
+        max_value=date_picker_max,
     )
 
     if selected_start_date > selected_end_date:

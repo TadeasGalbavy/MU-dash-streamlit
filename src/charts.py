@@ -12,6 +12,7 @@ TEXT_COLOR = "#f0ede8"
 SOFT_TEXT_COLOR = "#a8a49e"
 LABEL_TEXT_COLOR = "#000000"
 DATA_ACCENT_COLOR = "#c8f060"
+LINE_COLOR= "#000000"
 SECONDARY_ACCENT_COLOR = "#FFBBFF"
 CHART_COLOR_SEQUENCE = [
     DATA_ACCENT_COLOR,
@@ -21,6 +22,20 @@ CHART_COLOR_SEQUENCE = [
     "#b8a7ff",
     "#7ee0c6",
 ]
+COUNTRY_ISO3_MAP = {
+    "SK": "SVK",
+    "CZ": "CZE",
+    "PL": "POL",
+    "HU": "HUN",
+    "RO": "ROU",
+}
+COUNTRY_LABEL_COORDINATES = {
+    "SK": {"lat": 48.7, "lon": 19.7},
+    "CZ": {"lat": 49.8, "lon": 15.5},
+    "PL": {"lat": 52.1, "lon": 19.4},
+    "HU": {"lat": 47.1, "lon": 19.5},
+    "RO": {"lat": 45.9, "lon": 24.9},
+}
 
 
 def create_revenue_over_time_chart(orders_model: pd.DataFrame) -> go.Figure:
@@ -151,6 +166,118 @@ def create_revenue_by_country_chart(orders_model: pd.DataFrame) -> go.Figure:
     )
 
     return _apply_dark_chart_theme(_apply_bar_value_labels(figure, "%{text:,.0f}"))
+
+
+def create_revenue_by_country_choropleth_chart(
+    orders_model: pd.DataFrame,
+) -> go.Figure:
+    """Create a revenue by country choropleth chart."""
+    if _is_empty_or_missing(orders_model, {"country", "revenue"}):
+        return _empty_chart("Revenue by country")
+
+    chart_df = orders_model.copy()
+    chart_df["revenue"] = pd.to_numeric(
+        chart_df["revenue"],
+        errors="coerce",
+    ).fillna(0)
+
+    chart_data = (
+        chart_df.groupby("country", as_index=False)["revenue"]
+        .sum()
+        .sort_values("revenue", ascending=False)
+    )
+    chart_data["country_iso3"] = chart_data["country"].map(COUNTRY_ISO3_MAP)
+    chart_data = chart_data.dropna(subset=["country_iso3"])
+    chart_data["label_lat"] = chart_data["country"].map(
+        lambda country: COUNTRY_LABEL_COORDINATES.get(country, {}).get("lat")
+    )
+    chart_data["label_lon"] = chart_data["country"].map(
+        lambda country: COUNTRY_LABEL_COORDINATES.get(country, {}).get("lon")
+    )
+    chart_data["revenue_label"] = chart_data.apply(
+        lambda row: f"{row['country']} €{row['revenue'] / 1000:.1f}k",
+        axis=1,
+    )
+
+    if chart_data.empty:
+        return _empty_chart("Revenue by country")
+
+    figure = px.choropleth(
+        chart_data,
+        locations="country_iso3",
+        color="revenue",
+        hover_name="country",
+        hover_data={"country_iso3": False, "revenue": ":,.2f"},
+        title="Revenue by country",
+        labels={"revenue": "Revenue"},
+        color_continuous_scale=[
+            BACKGROUND_COLOR,
+            "#33401f",
+            "#789438",
+            DATA_ACCENT_COLOR,
+        ],
+        scope="europe",
+    )
+    figure.update_traces(
+        marker_line_color=BACKGROUND_COLOR,
+        marker_line_width=0.8,
+        hovertemplate="%{hovertext}<br>Revenue: %{z:,.2f}<extra></extra>",
+    )
+    label_data = chart_data.dropna(subset=["label_lat", "label_lon"])
+    if not label_data.empty:
+        # LABEL_WIDTH controls label width; LABEL_HEIGHT controls label thickness.
+        LABEL_WIDTH = 50
+        LABEL_HEIGHT = 11
+        figure.add_trace(
+            go.Scattergeo(
+                lon=label_data["label_lon"],
+                lat=label_data["label_lat"],
+                mode="markers+text",
+                text=label_data["revenue_label"],
+                textposition="middle center",
+                textfont={"color": LABEL_TEXT_COLOR, "size": 10},
+                marker={
+                    "symbol": "line-ew-open",
+                    "color": "rgba(200, 240, 96, 0.82)",
+                    "size": LABEL_WIDTH,
+                    "line": {"color": LINE_COLOR, "width": LABEL_HEIGHT},
+                },
+                hoverinfo="skip",
+                showlegend=False,
+            )
+        )
+    figure.update_geos(
+        bgcolor=SURFACE_COLOR,
+        lakecolor=SURFACE_COLOR,
+        landcolor=BACKGROUND_COLOR,
+        countrycolor=BORDER_COLOR,
+        coastlinecolor=BORDER_COLOR,
+        fitbounds="locations",
+        showframe=False,
+        showcoastlines=True,
+    )
+    figure.update_layout(
+        height=440,
+        margin={"l": 0, "r": 0, "t": 40, "b": 0},
+        coloraxis_colorbar={
+            "title": {"text": "Revenue", "font": {"color": TEXT_COLOR}},
+            "tickfont": {"color": SOFT_TEXT_COLOR},
+            "tickprefix": "€",
+            "tickformat": "~s",
+            "thickness": 12,
+            "len": 0.58,
+            "x": 0.98,
+            "y": 0.5,
+        },
+    )
+
+    figure = _apply_dark_chart_theme(figure)
+    figure.update_layout(
+        height=440,
+        margin={"l": 0, "r": 0, "t": 40, "b": 0},
+    )
+
+    return figure
 
 
 def create_revenue_by_category_chart(orders_model: pd.DataFrame) -> go.Figure:
