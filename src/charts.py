@@ -10,6 +10,7 @@ SURFACE_COLOR = "#141414"
 BORDER_COLOR = "#222"
 TEXT_COLOR = "#f0ede8"
 SOFT_TEXT_COLOR = "#a8a49e"
+LABEL_TEXT_COLOR = "#000000"
 DATA_ACCENT_COLOR = "#c8f060"
 SECONDARY_ACCENT_COLOR = "#FFBBFF"
 CHART_COLOR_SEQUENCE = [
@@ -202,9 +203,11 @@ def create_revenue_by_category_donut_chart(orders_model: pd.DataFrame) -> go.Fig
         color_discrete_sequence=CHART_COLOR_SEQUENCE,
     )
     figure.update_traces(
-        textinfo="label+percent",
+        textinfo="percent",
         textposition="inside",
         insidetextorientation="radial",
+        textfont={"color": LABEL_TEXT_COLOR},
+        hovertemplate="%{label}<br>Revenue: %{value:,.2f}<extra></extra>",
     )
 
     return _apply_dark_chart_theme(figure)
@@ -263,9 +266,9 @@ def _empty_chart(title: str) -> go.Figure:
 def _apply_bar_value_labels(figure: go.Figure, texttemplate: str) -> go.Figure:
     figure.update_traces(
         texttemplate=texttemplate,
-        textposition="auto",
+        textposition="inside",
         cliponaxis=False,
-        textfont={"color": TEXT_COLOR},
+        textfont={"color": LABEL_TEXT_COLOR},
     )
     return figure
 
@@ -308,11 +311,11 @@ def _apply_dark_chart_theme(figure: go.Figure) -> go.Figure:
         elif trace.type == "bar":
             trace.update(
                 marker={"color": DATA_ACCENT_COLOR},
-                textfont={"color": TEXT_COLOR},
+                textfont={"color": LABEL_TEXT_COLOR},
             )
         elif trace.type == "pie":
             trace.update(
-                textfont={"color": TEXT_COLOR},
+                textfont={"color": LABEL_TEXT_COLOR},
                 marker={"line": {"color": BACKGROUND_COLOR, "width": 2}},
             )
 
