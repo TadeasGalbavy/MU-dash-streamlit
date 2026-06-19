@@ -97,7 +97,7 @@ if filtered_orders_model.empty:
 st.divider()
 
 st.subheader("Key metrics")
-st.write(f"Rows in orders model: `{len(filtered_orders_model):,}`")
+st.write(f"Filtered rows: `{len(filtered_orders_model):,}`")
 total_revenue = calculate_total_revenue(filtered_orders_model)
 total_orders = calculate_total_orders(filtered_orders_model)
 average_order_value = calculate_average_order_value(filtered_orders_model)
